@@ -12,5 +12,5 @@ This will form the basis for implementing alternative models (traits, ML, mechan
 
 Notes:
 - LU data can be extracted from k.lab
-- Database can be isnpired in BAAD.
+- Database can be isnpired in BAAD and in https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13104
 - Think on incorporating phenological aspects.
