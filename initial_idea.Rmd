@@ -1,0 +1,55 @@
+# Let's predict
+
+The first step would be to decide where do we store the data. There are two types of data for each dataset.
+
+1) site data. e.g. `Bartomeus_OSR_sites.csv'
+
+`site, lat, long, crop, variety, landcape metrics, yield``
+
+2) observations data e.g. `Bartomeus_OSR_pollinators.csv'
+
+`site, pollinator_guild, pollinator_species, frequency'
+
+From 2, we can extract # of Honeybees, richness, Evenness, Abundance, ... and merge into the first dataset. This should be automated. 
+
+A master table compiling all datasets must be done, and easy to update. 
+
+The second step is to use this data to make two analysis:
+
+1) Predict species richness, abundance per guild, etc... from landscape data. Here random factors like country or climatic region may help get the intercepts right.
+
+2) Predict the expected yield given pollinators richness, abundance, etc... Again, random factors will tailor this to your specific crop, region, etc...
+
+3) Change the assumption of linearity to non-inflicted curves of the shape (see below), and think how to combine different datasets in diferent parts of the curve. That is, instead of z-transforming and losing generality, I would like to combine them: 
+
+#Code for playing with non-inflicted curves.
+#from morris, using the same idea, but different notation:
+#y is benefit, x is the number of visits by all taxa combined, 
+#p1 (a) is the y-intercept (i.e., reproductive success for unvisited [V 1⁄4 0] flowers),
+#p2 (b) is the asymptote (i.e., B when V 1⁄4 ‘), 
+#and p3 (c) governs the rate of approach to the asymptote. 
+
+# a = % of fruit set witout pollinators
+# b = Max yield attained on the region
+# c = Shape of the curve?
+
+pol <- function(a, b, c, from_ = 0, to_ = 1, add_ = FALSE, col_ = 2){
+  a2 <- (b*a)/100
+  b2 <- b-a2
+  curve(a2+b2*(1-exp(-c*x)), from = from_, to = to_, add = add_, col = col_, ylim = c(0, b))
+}
+
+pol(a = 30, b = 200, c = 10, add = FALSE)
+pol(a = 30, b = 200, c = 0.4, add = FALSE)
+for (i in 2:10){
+  pol(a = 30, b = 200, c = i, add = TRUE)
+}
+
+#Sigmoidal, I would use only non-inflicted.
+pol2 <- function(a, b, c, from_ = 0, to_ = 1, add_ = FALSE, col_ = 2){
+  a2 <- (b*a)/100
+  curve(b /(1 + (b/a2 -1) * exp(-c*x)), from = from_, to = to_, add = add_, col = col_, ylim = c(0, b))
+}
+
+
+With this type of models, for a new set of sites, you can predict either absolute value (harder) or rank them (easier). For an unknown crop, you will only use the genral predection, but for a known crop and region you can use tailor the prediction and narrow down the error.
