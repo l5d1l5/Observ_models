@@ -1,16 +1,15 @@
-
 # The purpose of this script is to recreate the AIC results from the Garibaldi et al 2013 supplementary tables S3 and S4, using the data they provided
 # JR: (5-1-2019) currently, it is not giving the same AIC values as they got in most cases.  One possibility is perhaps not exactly the same data was used for each model?  I need to read their methods more carefully.
 # JR: (5-1-2019) I see now that the methods say "we included only crop systems for which both wild insects and honey bees were active flower visitors, i.e. at least 5% of total visitation by either group." (I assume that this corresponds to the crops listed with "yes" in table S2)
 
 # working directory on James's computer--don't forget to change this
-setwd("C:/Users/James/Documents/Research/Pollinators/OBServ")
+#setwd("C:/Users/James/Documents/Research/Pollinators/OBServ")
 
 # load packages
 library(lme4)
 
 # load data
-G2013data <- read.csv(file="Garibaldi_et_al_2013_Database_S1.csv", header=T)
+G2013data <- read.csv(file="data/Garibaldi_et_al_2013_Database_S1.csv", header=T)
 head(G2013data)
 nrow(G2013data)
 
